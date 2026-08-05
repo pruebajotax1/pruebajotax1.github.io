@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jotax Fotografía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment:#F2E8D8;
+    --parchment-deep:#E9DBC3;
+    --espresso:#2B1E14;
+    --sienna:#A6472A;
+    --ochre:#C4872F;
+    --taupe:#8C7259;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--parchment);
+    color:var(--espresso);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  .hero{
+    min-height:100svh;
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    align-items:center;
+    position:relative;
+  }
+
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(1200px 600px at -10% 110%, var(--parchment-deep), transparent 60%);
+    pointer-events:none;
+  }
+
+  .hero-text{
+    padding:8vh 6vw 8vh 7vw;
+    position:relative;
+    z-index:2;
+  }
+
+  .eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--taupe);
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    margin-bottom:1.6rem;
+    opacity:0;
+    animation:riseIn 0.8s ease-out 1.35s forwards;
+  }
+  .eyebrow::before{
+    content:"";
+    width:28px;
+    height:1px;
+    background:var(--sienna);
+    display:inline-block;
+  }
+
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(2.8rem, 6vw, 5.4rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    color:var(--espresso);
+    opacity:0;
+    animation:riseIn 0.9s ease-out 1.5s forwards;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--sienna);
+  }
+
+  .tagline{
+    margin-top:1.6rem;
+    max-width:34ch;
+    font-size:1.08rem;
+    line-height:1.6;
+    color:var(--espresso);
+    opacity:0;
+    animation:riseIn 0.9s ease-out 1.7s forwards;
+  }
+  .tagline b{
+    color:var(--sienna);
+    font-weight:600;
+  }
+
+  .hero-meta{
+    margin-top:3rem;
+    display:flex;
+    gap:2.4rem;
+    flex-wrap:wrap;
+    opacity:0;
+    animation:riseIn 0.9s ease-out 1.9s forwards;
+  }
+  .hero-meta div{
+    border-left:2px solid var(--ochre);
+    padding-left:0.9rem;
+  }
+  .hero-meta span{
+    display:block;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--taupe);
+    margin-bottom:0.25rem;
+  }
+  .hero-meta strong{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:1.05rem;
+  }
+
+  /* --- Aperture reveal --- */
+  .frame-wrap{
+    position:relative;
+    height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1;
+  }
+
+  .aperture-photo{
+    position:relative;
+    width:min(30vw, 460px);
+    aspect-ratio:4/5;
+    border-radius:2px;
+  }
+
+  .aperture-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:sepia(0.18) saturate(1.05) contrast(1.02);
+  }
+
+  .blade{
+    position:absolute;
+    inset:-4%;
+    background:var(--parchment);
+    transform-origin:center;
+  }
+  /* 8 blades forming an iris that swing open like a lens aperture */
+  .blade:nth-child(1){ clip-path: polygon(50% 50%, 50% -10%, 78% -10%); transform: rotate(0deg); animation: swing1 1.1s cubic-bezier(.6,0,.2,1) 0.35s forwards; }
+  .blade:nth-child(2){ clip-path: polygon(50% 50%, 100% 22%, 100% 50%); transform: rotate(0deg); animation: swing2 1.1s cubic-bezier(.6,0,.2,1) 0.40s forwards; }
+  .blade:nth-child(3){ clip-path: polygon(50% 50%, 100% 50%, 100% 78%); transform: rotate(0deg); animation: swing3 1.1s cubic-bezier(.6,0,.2,1) 0.45s forwards; }
+  .blade:nth-child(4){ clip-path: polygon(50% 50%, 78% 110%, 50% 110%); transform: rotate(0deg); animation: swing4 1.1s cubic-bezier(.6,0,.2,1) 0.50s forwards; }
+  .blade:nth-child(5){ clip-path: polygon(50% 50%, 50% 110%, 22% 110%); transform: rotate(0deg); animation: swing1 1.1s cubic-bezier(.6,0,.2,1) 0.55s forwards; }
+  .blade:nth-child(6){ clip-path: polygon(50% 50%, 0% 78%, 0% 50%); transform: rotate(0deg); animation: swing2 1.1s cubic-bezier(.6,0,.2,1) 0.60s forwards; }
+  .blade:nth-child(7){ clip-path: polygon(50% 50%, 0% 50%, 0% 22%); transform: rotate(0deg); animation: swing3 1.1s cubic-bezier(.6,0,.2,1) 0.65s forwards; }
+  .blade:nth-child(8){ clip-path: polygon(50% 50%, 22% -10%, 50% -10%); transform: rotate(0deg); animation: swing4 1.1s cubic-bezier(.6,0,.2,1) 0.70s forwards; }
+
+  @keyframes swing1{ to { transform: rotate(-130deg) scale(1.6); opacity:0; } }
+  @keyframes swing2{ to { transform: rotate(130deg) scale(1.6); opacity:0; } }
+  @keyframes swing3{ to { transform: rotate(-130deg) scale(1.6); opacity:0; } }
+  @keyframes swing4{ to { transform: rotate(130deg) scale(1.6); opacity:0; } }
+
+  .aperture-photo::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:1px solid rgba(43,30,20,0.15);
+    pointer-events:none;
+  }
+
+  .fnumber{
+    position:absolute;
+    bottom:-2.6rem;
+    right:0;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:0.85rem;
+    color:var(--taupe);
+    opacity:0;
+    animation:riseIn 0.8s ease-out 1.8s forwards;
+  }
+
+  @keyframes riseIn{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns:1fr; }
+    .frame-wrap{ height:56svh; order:1; }
+    .hero-text{ order:2; padding:5vh 7vw 8vh; }
+    .aperture-photo{ width:min(62vw, 340px); }
+    .hero-meta{ gap:1.6rem; }
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--sienna);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fotografía &amp; video de eventos · Buenos Aires</p>
+    <h1>Momentos que<br><em>no se repiten,</em><br>bien guardados.</h1>
+    <p class="tagline">Soy Jota, fotógrafo y camarógrafo desde 1998. Cubro <b>quince años, casamientos y fiestas</b> con luz de flash rebotado y un ojo entrenado en más de dos décadas de eventos reales.</p>
+    <div class="hero-meta">
+      <div><span>Experiencia</span><strong>Desde 1998</strong></div>
+      <div><span>Especialidad</span><strong>Quince &amp; bodas</strong></div>
+      <div><span>Zona</span><strong>Bs. As. Provincia</strong></div>
+    </div>
+  </div>
+
+  <div class="frame-wrap">
+    <div class="aperture-photo">
+      <img src="https://picsum.photos/seed/jotax15/700/875" alt="Foto destacada de un evento fotografiado por Jotax Fotografía">
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <div class="blade"></div>
+      <span class="fnumber">f/2.8 · flash rebotado</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
